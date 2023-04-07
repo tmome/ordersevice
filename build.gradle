@@ -1,0 +1,105 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+	id 'idea'
+	id 'java'
+	id 'groovy'
+}
+
+group = 'sample'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation ("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	implementation 'org.springframework.boot:spring-boot-starter-undertow'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.hibernate:hibernate-spatial'
+	implementation 'org.hibernate:hibernate-envers'
+	implementation 'com.querydsl:querydsl-apt'
+	implementation 'com.querydsl:querydsl-jpa'
+
+	implementation 'org.apache.commons:commons-lang3:3.7'
+
+	compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+	compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+	compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.flywaydb:flyway-core'
+
+	runtimeOnly 'com.h2database:h2'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
+		exclude module: "junit"
+	}
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+	testImplementation 'org.assertj:assertj-core:3.20.2'
+	testImplementation 'org.codehaus.groovy:groovy:3.0.8'
+	testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+	testImplementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
+
+	testCompileOnly 'junit:junit'
+	testCompileOnly 'org.springdoc:springdoc-openapi-ui:1.6.8'
+	testCompileOnly 'org.springdoc:springdoc-openapi-webmvc-core:1.6.8'
+	testRuntimeOnly ('org.junit.vintage:junit-vintage-engine')
+	testRuntimeOnly 'com.h2database:h2'
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+ext {
+	querydslSrcDir = "$buildDir/generated/querydsl"
+}
+
+querydsl {
+	library = "com.querydsl:querydsl-apt"
+	jpa = true
+	querydslSourcesDir = querydslSrcDir
+}
+
+compileQuerydsl {
+	delete "./src/main/generated/"
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ["src/main/java", querydslSrcDir]
+		}
+	}
+}
+
+idea {
+	module {
+		sourceDirs += file(querydslSrcDir)
+	}
+}
+
+test {
+	useJUnitPlatform()
+}

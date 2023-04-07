@@ -31,6 +31,9 @@ dependencies {
 
 	implementation 'org.apache.commons:commons-lang3:3.7'
 
+	compileOnly 'org.springdoc:springdoc-openapi-ui:1.6.8'
+	compileOnly 'org.springdoc:springdoc-openapi-webmvc-core:1.6.8'
+
 	compileOnly 'com.fasterxml.jackson.core:jackson-databind'
 	compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
 	compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'

@@ -1,4 +1,4 @@
-package sample.ordersevice.config;
+package sample.orderservice.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;

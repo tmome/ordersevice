@@ -1,0 +1,68 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sample.orderservice
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        show-sql: true
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 500
+          fetch_size: 500
+          batch_versioned_data: true
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:orderservice;MODE=MYSQL;
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  flyway:
+    url: jdbc:h2:mem:orderservice
+    user: sa
+    password:
+    baseline-on-migrate: true
+
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+    resolve-schema-properties: true
+
+  swagger-ui:
+    enabled: true
+    version: v1
+    groups-order: desc
+    try-it-out-enabled: true
+    display-request-duration: true
+    disable-swagger-default-url: true
+  show-actuator: true
+  default-produces-media-type: application/json
+
+  devtools:
+    add-properties: true
+    restart:
+      enabled: true
+
+logging:
+  config: classpath:logback.xml
+  level:
+    web: DEBUG
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG
+    io.swagger.models.parameters.AbstractSerializableParameter: error

@@ -7,4 +7,6 @@ import sample.orderservice.domain.user.domain.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
+  boolean existsByUserId(final String userId);
 }

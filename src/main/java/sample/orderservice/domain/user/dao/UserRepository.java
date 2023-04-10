@@ -8,5 +8,6 @@ import sample.orderservice.domain.user.domain.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+  Optional<UserEntity> findByUserId(final String userId);
   boolean existsByUserId(final String userId);
 }

@@ -1,6 +1,7 @@
 package sample.orderservice.domain.user.application;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +39,8 @@ public class UserSignUpService {
         .build();
   }
 
-  private void userSignUpValidation(final String userId) {
+  @Transactional(readOnly = true)
+  public void userSignUpValidation(final String userId) {
     if (userRepository.existsByUserId(userId)) {
       throw new SignUpValidationException();
     }

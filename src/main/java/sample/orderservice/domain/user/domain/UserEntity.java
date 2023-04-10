@@ -1,13 +1,21 @@
 package sample.orderservice.domain.user.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +23,14 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "users")
 public class UserEntity implements UserDetails {
   @Id
@@ -44,20 +55,25 @@ public class UserEntity implements UserDetails {
   @Column(name = "update_date")
   private LocalDateTime updateDate;
 
+  @ElementCollection(fetch = FetchType.EAGER)
+  @Builder.Default
+  private List<String> roles = new ArrayList<>();
 
-  @Builder
+
   private UserEntity(
       String userId,
       String userPassword,
       String userName,
       LocalDateTime createDate,
-      LocalDateTime updateDate
+      LocalDateTime updateDate,
+      List<String> roles
   ) {
     this.userId = userId;
     this.userPassword = userPassword;
     this.userName = userName;
     this.createDate = createDate;
     this.updateDate = updateDate;
+    this.roles = roles;
   }
 
   /**
@@ -65,7 +81,9 @@ public class UserEntity implements UserDetails {
    */
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
+    return this.roles.stream()
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
   }
 
   /**

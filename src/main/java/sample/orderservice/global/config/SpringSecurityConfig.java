@@ -1,37 +1,51 @@
 package sample.orderservice.global.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import sample.orderservice.global.utils.JwtUtil;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sample.orderservice.global.utils.security.JwtAuthenticationFilter;
+import sample.orderservice.global.utils.security.JwtTokenProvider;
 
 @EnableWebSecurity
 @Configuration
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+@RequiredArgsConstructor
+public class SpringSecurityConfig {
 
-  @Value("${jwt.secret}")
-  private String secret;
+  private final JwtTokenProvider jwtTokenProvider;
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.cors().disable()
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http.httpBasic()
+        .disable()
         .csrf().disable()
-        .formLogin().disable()
-        .headers().frameOptions().disable();
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
+        .antMatchers("/v1/user/**").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+        .build();
+  }
+
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return (webSecurity) -> webSecurity.ignoring()
+        .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/h2-console/**");
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  public JwtUtil jwtUtil() {
-    return new JwtUtil(secret);
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   }
 }

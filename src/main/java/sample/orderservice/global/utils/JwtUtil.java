@@ -13,10 +13,10 @@ public class JwtUtil {
     this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
   }
 
-  public String createToken(final Long id, final String name) {
+  public String createToken(final Long userId, final String userName) {
     return Jwts.builder()
-        .claim("usedId", id)
-        .claim("name", name)
+        .claim("userId", userId)
+        .claim("username", userName)
         .signWith(key, SignatureAlgorithm.HS256)
         .compact();
   }

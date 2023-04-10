@@ -68,5 +68,6 @@ logging:
     io.swagger.models.parameters.AbstractSerializableParameter: error
 
 jwt:
-  secret: validationSecretKey
+  secret: eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4MTEwNjA2OCwiaWF0IjoxNjgxMTA2MDY4fQ.dA6zAEQNYNrewHYCTSWLqRr5btXjiyHZ0KKDk2ShIZ4
+
 

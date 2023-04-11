@@ -20,8 +20,8 @@ public class SpringdocConfig {
 
   public Info info() {
     return new Info()
-        .title("주문 서비스")
-        .description("주문 서비스 어플리케이션 샘플 코드 입니다.")
+        .title("간편 로그인 어플리케이션")
+        .description("간편 로그인 어플리케이션 샘플 코드 입니다.")
         .version("v1")
         .contact(new Contact()
             .email("effortsof@gmail.com")

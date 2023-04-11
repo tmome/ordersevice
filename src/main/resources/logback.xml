@@ -35,7 +35,7 @@
   <logger name="org.apache.http" level="INFO"/>
   <logger name="com.querydsl" level="INFO"/>
 
-  <logger name="sample.orderservice" level="TRACE"/>
+  <logger name="sample.security" level="TRACE"/>
 
   <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG"/>
   <logger name="com.zaxxer.hikari" level="TRACE"/>

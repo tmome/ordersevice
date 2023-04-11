@@ -8,3 +8,10 @@ CREATE TABLE IF NOT EXISTS users (
 );
 COMMENT ON TABLE users is '회원 테이블';
 
+
+-- CREATE TABLE IF NOT EXISTS user_roles (
+--     user_roles_id BIGINT(5) AUTO_INCREMENT PRIMARY KEY COMMENT '회원 권한 식별자',
+--     id VARCHAR(15) NOT NULL COMMENT '회원 아이디',
+--     auth VARCHAR(15) NOT NULL DEFAULT 'USER' COMMENT '회원 권한'
+-- );
+-- COMMENT ON TABLE users is '회원 권한 테이블';

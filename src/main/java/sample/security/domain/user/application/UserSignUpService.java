@@ -36,7 +36,7 @@ public class UserSignUpService {
         .userName(userSignUpRequest.getUserName())
         .createDate(LocalDateTime.now())
         .updateDate(LocalDateTime.now())
-        .roles(List.of("USER"))
+        .roles(List.of(userSignUpRequest.getAuth().toString()))
         .build();
   }
 

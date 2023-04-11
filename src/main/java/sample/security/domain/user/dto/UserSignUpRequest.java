@@ -33,4 +33,8 @@ public class UserSignUpRequest {
   @Schema(description = "유저 이름", example = "testName", required = true)
   private String userName;
 
+  @NotBlank
+  @Schema(description = "권한 정보", example = "USER", readOnly = true)
+  private String auth;
+
 }

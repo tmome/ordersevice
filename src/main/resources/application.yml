@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: sample.orderservice
+    name: sample.security
 
   jpa:
     open-in-view: false
